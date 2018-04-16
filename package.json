@@ -1,11 +1,14 @@
 {
   "name": "treest",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "tsc && tslint --project tsconfig.json && jest --verbose --coverage",
     "watch:test": "jest --watch"
+  },
+  "bin": {
+    "treest": "./bin.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +33,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/node": "^9.6.5",
     "deep-equal": "^1.0.1",
+    "resolve-module-path": "^0.0.6",
     "with-error": "^0.0.1"
   }
 }

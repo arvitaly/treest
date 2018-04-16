@@ -8,6 +8,7 @@ const Module = ModuleM;
 class Registry {
     constructor(config) {
         this.config = config;
+        this.hasUnexpected = false;
         this.modules = {};
         this.funcs = [];
         this.calls = [];
@@ -42,6 +43,10 @@ class Registry {
             case "undefined":
                 return value;
             case "function":
+                const existingFunc = this.funcs.find((f) => f.func === value);
+                if (existingFunc) {
+                    return existingFunc.func;
+                }
                 return this.createMockFunction(moduleName, exportPath, value);
             case "object":
                 if (Array.isArray(value)) {
@@ -80,7 +85,9 @@ class Registry {
             that.beforeCall(id, moduleName, exportPath, that.parseArgs(moduleName, exportPath, args));
             const result = func(...args);
             if (result instanceof Promise) {
-                result.then((res) => that.afterCall(id, res, true));
+                result
+                    .then((res) => that.afterCall(id, res, true))
+                    .catch((e) => that.afterCall(id, { __$__: "Error", value: e.toString() }, true));
             }
             else {
                 that.afterCall(id, result, false);
@@ -104,7 +111,9 @@ class Registry {
         obj.___$___methodsCalls.push({ methodName, args: this.parseArgs(moduleName, exportPath, args) });
         const result = method(...args);
         if (result instanceof Promise) {
-            result.then((res) => this.afterCall(id, res, true));
+            result
+                .then((res) => this.afterCall(id, res, true))
+                .catch((e) => this.afterCall(id, { __$__: "Error", value: e.toString() }, true));
         }
         else {
             this.afterCall(id, result, false);
@@ -123,10 +132,11 @@ class Registry {
             case "undefined":
                 return value;
             case "function":
-                if (!this.funcs.find((f) => f.func === value)) {
+                const func = this.funcs.find((f) => f.func === value);
+                if (!func) {
                     throw new Error("Unknown function " + value);
                 }
-                return { __$__: "function", moduleName, exportPath };
+                return { __$__: "function", moduleName: func.moduleName, exportPath: func.exportPath };
             case "object":
                 if (Array.isArray(value)) {
                     return value.map((v) => this.parseAnyArgs(moduleName, exportPath, v));
@@ -137,6 +147,12 @@ class Registry {
                         returns[objectKey] = this.parseAnyArgs(moduleName, exportPath + "." + objectKey, value[objectKey]);
                     }
                     return returns;
+                }
+                if (value instanceof Error) {
+                    return {
+                        __$__: "Error",
+                        value: value.toString(),
+                    };
                 }
                 const clas = this.funcs.find((cl) => value instanceof cl.realFunc);
                 if (clas) {
@@ -172,18 +188,18 @@ class Registry {
         const call = this.calls.filter((c) => c.id === id)[0];
         logger.log("");
         logger.log("Test ::", "\x1b[35m" + call.moduleName + "\x1b[0m");
-        logger.log("\x1b[33m%s\x1b[0m", call.exportPath, call.args, "->", "\x1b[32m" + result + "\x1b[0m");
+        logger.log("\x1b[33m%s\x1b[0m", call.exportPath, call.args, "->", "\x1b[32m" +
+            JSON.stringify(result) + "\x1b[0m");
+        result = this.parseAnyArgs(call.moduleName, call.exportPath, result);
         const expectedCall = this.expectedCalls.find((c) => deepEqual(c.args, call.args)
             && c.moduleName === call.moduleName && c.exportPath === call.exportPath);
         if (expectedCall) {
             if (!deepEqual(expectedCall.result, result) || isPromise !== expectedCall.isPromise) {
+                this.hasUnexpected = true;
+                logger.log("\x1b[41m%s%s%s\x1b[0m", "Unexpected result", " expected ", expectedCall.result, " real ", result);
                 if (this.config.command === "update") {
                     logger.log("\x1b[36m%s%s%s\x1b[0m", "Test's result was updated", " expected ", expectedCall.result, " real ", result);
                     expectedCall.result = result;
-                }
-                else {
-                    logger.log("\x1b[41m%s%s%s\x1b[0m", "Unexpected result", " expected ", expectedCall.result, " real ", result);
-                    process.exit(1);
                 }
             }
         }

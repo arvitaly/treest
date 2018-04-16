@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = require("path");
+const readline_1 = require("readline");
+const resolveModulePath = require("resolve-module-path");
 const with_error_1 = require("with-error");
 const Registry_1 = require("./Registry");
 function run(io) {
@@ -19,13 +21,43 @@ function run(io) {
         const { result: resultTests, error } = with_error_1.default(() => JSON.parse(fs_1.readFileSync(testsPath).toString()));
         const tests = error ? [] : resultTests;
         const treestConfigPath = path_1.resolve(path_1.join(process.cwd(), "treest.config.js"));
-        const config = require(treestConfigPath).default;
         const registry = new Registry_1.default({ logger: io.console, calls: tests, command, rootPath: process.cwd() });
+        const config = require(treestConfigPath).default;
         for (const test of config.tests) {
-            const mod = require(test.module);
-            yield mod[test.exportName](...test.args);
+            const mod = require(resolveModulePath(test.module, {
+                basePath: process.cwd(),
+                npmPath: path_1.resolve(path_1.join(process.cwd(), "node_modules")),
+            }));
+            try {
+                yield mod[test.exportName](...test.args);
+            }
+            catch (e) {
+                //
+            }
         }
-        fs_1.writeFileSync(testsPath, JSON.stringify(registry.getCalls()));
+        if (registry.hasUnexpected) {
+            const rl = readline_1.createInterface({
+                input: process.stdin,
+                output: process.stdout,
+                terminal: false,
+            });
+            io.console.log("Found unexpected result in tests, for update press `u`, for quit `q`");
+            rl.on("line", (cmd) => {
+                if (cmd === "u") {
+                    const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config");
+                    fs_1.writeFileSync(testsPath, JSON.stringify(calls));
+                    rl.close();
+                    process.exit(0);
+                }
+                if (cmd === "q") {
+                    process.exit(1);
+                }
+            });
+        }
+        else {
+            const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config");
+            fs_1.writeFileSync(testsPath, JSON.stringify(calls));
+        }
     });
 }
 exports.run = run;
