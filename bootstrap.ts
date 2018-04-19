@@ -25,6 +25,7 @@ export async function run(io: {
         mocks: config.mocks || {},
     });
     const tests: Array<{ name: string, fn: any }> = [];
+    const oldTest = (global as any).test;
     (global as any).test = (name: string, fn: any) => {
         tests.push({ name, fn });
     };
@@ -59,6 +60,7 @@ export async function run(io: {
         });
     } else {
         const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config");
-        writeFileSync(testsPath, JSON.stringify(calls));
+        writeFileSync(testsPath, JSON.stringify(calls, null, 2));
     }
+    (global as any).test = oldTest;
 }

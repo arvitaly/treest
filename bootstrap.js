@@ -30,6 +30,7 @@ function run(io) {
             mocks: config.mocks || {},
         });
         const tests = [];
+        const oldTest = global.test;
         global.test = (name, fn) => {
             tests.push({ name, fn });
         };
@@ -65,8 +66,9 @@ function run(io) {
         }
         else {
             const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config");
-            fs_1.writeFileSync(testsPath, JSON.stringify(calls));
+            fs_1.writeFileSync(testsPath, JSON.stringify(calls, null, 2));
         }
+        global.test = oldTest;
     });
 }
 exports.run = run;

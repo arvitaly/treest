@@ -1,164 +1,164 @@
 [
-    {
-        "moduleName": "__fixtures__/module1",
-        "exportPath": ".hello",
-        "args": [
-            "Hello",
-            "world"
-        ],
-        "id": "1524132871282570881",
-        "result": "Hello, world!",
-        "isPromise": true
-    },
-    {
-        "moduleName": "__fixtures__/module2",
-        "exportPath": ".concat",
-        "args": [
-            [
-                "Hello",
-                "world"
-            ],
-            {
-                "__$__": "class",
-                "moduleName": "__fixtures__/ClassA",
-                "exportPath": ".default",
-                "state": "{\"value\":\"value1\"}"
-            }
-        ],
-        "id": "1524132871282620999",
-        "result": "Hello, world",
-        "isPromise": false
-    },
-    {
+  {
+    "moduleName": "__fixtures__/module1",
+    "exportPath": ".hello",
+    "args": [
+      "Hello",
+      "world"
+    ],
+    "id": "1524133852722743913",
+    "result": "Hello, world!",
+    "isPromise": true
+  },
+  {
+    "moduleName": "__fixtures__/module2",
+    "exportPath": ".concat",
+    "args": [
+      [
+        "Hello",
+        "world"
+      ],
+      {
+        "__$__": "class",
         "moduleName": "__fixtures__/ClassA",
-        "exportPath": ".default.getSeparator",
-        "args": [
-            {
-                "__$__": "class",
-                "moduleName": "__fixtures__/ClassA",
-                "exportPath": ".default",
-                "state": "{\"value\":\"value1\"}"
-            },
-            "comma"
-        ],
-        "id": "1524132871282628795",
-        "result": ",",
-        "isPromise": false
-    },
-    {
-        "moduleName": "fs",
-        "exportPath": ".readFileSync",
-        "args": [
-            "./comma.txt"
-        ],
-        "id": "1524132871282323832",
-        "result": ",",
-        "isPromise": false
-    },
-    {
-        "moduleName": "__fixtures__/module3",
-        "exportPath": ".apply",
-        "args": [
-            "Hello, world",
-            {
-                "__$__": "function",
-                "moduleName": "__fixtures__/module2",
-                "exportPath": ".addExclamation"
-            }
-        ],
-        "id": "1524132871297750376",
-        "result": "Hello, world!",
-        "isPromise": false
-    },
-    {
-        "moduleName": "__fixtures__/module2",
-        "exportPath": ".addExclamation",
-        "args": [
-            "Hello, world"
-        ],
-        "id": "1524132871297346635",
-        "result": "Hello, world!",
-        "isPromise": false
-    },
-    {
-        "moduleName": "__fixtures__/module1",
-        "exportPath": ".hello",
-        "args": [
-            "Hello",
-            "John"
-        ],
-        "id": "1524132871322628642",
-        "result": "Hello, John!",
-        "isPromise": true
-    },
-    {
-        "moduleName": "__fixtures__/module2",
-        "exportPath": ".concat",
-        "args": [
-            [
-                "Hello",
-                "John"
-            ],
-            {
-                "__$__": "class",
-                "moduleName": "__fixtures__/ClassA",
-                "exportPath": ".default",
-                "state": "{\"value\":\"value1\"}"
-            }
-        ],
-        "id": "1524132871322437545",
-        "result": "Hello, John",
-        "isPromise": false
-    },
-    {
+        "exportPath": ".default",
+        "state": "{\"value\":\"value1\"}"
+      }
+    ],
+    "id": "1524133852724554185",
+    "result": "Hello, world",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/ClassA",
+    "exportPath": ".default.getSeparator",
+    "args": [
+      {
+        "__$__": "class",
         "moduleName": "__fixtures__/ClassA",
-        "exportPath": ".default.getSeparator",
-        "args": [
-            {
-                "__$__": "class",
-                "moduleName": "__fixtures__/ClassA",
-                "exportPath": ".default",
-                "state": "{\"value\":\"value1\"}"
-            },
-            "comma"
-        ],
-        "id": "1524132871322608478",
-        "result": ",",
-        "isPromise": false
-    },
-    {
-        "moduleName": "fs",
-        "exportPath": ".readFileSync",
-        "args": [
-            "./comma.txt"
-        ],
-        "id": "1524132871322405746",
-        "result": ",",
-        "isPromise": false
-    },
-    {
-        "moduleName": "__fixtures__/module3",
-        "exportPath": ".apply",
-        "args": [
-            "Hello, John",
-            {
-                "__$__": "function",
-                "moduleName": "__fixtures__/module2",
-                "exportPath": ".addExclamation"
-            }
-        ],
-        "id": "1524132871329105125",
-        "result": "Hello, John!",
-        "isPromise": false
-    },
-    {
+        "exportPath": ".default",
+        "state": "{\"value\":\"value1\"}"
+      },
+      "comma"
+    ],
+    "id": "1524133852726887779",
+    "result": ",",
+    "isPromise": false
+  },
+  {
+    "moduleName": "fs",
+    "exportPath": ".readFileSync",
+    "args": [
+      "./comma.txt"
+    ],
+    "id": "1524133852726691363",
+    "result": ",",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/module3",
+    "exportPath": ".apply",
+    "args": [
+      "Hello, world",
+      {
+        "__$__": "function",
         "moduleName": "__fixtures__/module2",
-        "exportPath": ".addExclamation",
-        "args": [
-            "Hello, John"
-        ],
-        "id": "1524132871329334771",
-        "result": "Hello, John!",
-        "isPromise": false
-    }
+        "exportPath": ".addExclamation"
+      }
+    ],
+    "id": "1524133852752359358",
+    "result": "Hello, world!",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/module2",
+    "exportPath": ".addExclamation",
+    "args": [
+      "Hello, world"
+    ],
+    "id": "152413385275283033",
+    "result": "Hello, world!",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/module1",
+    "exportPath": ".hello",
+    "args": [
+      "Hello",
+      "John"
+    ],
+    "id": "1524133852764539764",
+    "result": "Hello, John!",
+    "isPromise": true
+  },
+  {
+    "moduleName": "__fixtures__/module2",
+    "exportPath": ".concat",
+    "args": [
+      [
+        "Hello",
+        "John"
+      ],
+      {
+        "__$__": "class",
+        "moduleName": "__fixtures__/ClassA",
+        "exportPath": ".default",
+        "state": "{\"value\":\"value1\"}"
+      }
+    ],
+    "id": "1524133852764405233",
+    "result": "Hello, John",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/ClassA",
+    "exportPath": ".default.getSeparator",
+    "args": [
+      {
+        "__$__": "class",
+        "moduleName": "__fixtures__/ClassA",
+        "exportPath": ".default",
+        "state": "{\"value\":\"value1\"}"
+      },
+      "comma"
+    ],
+    "id": "1524133852764895896",
+    "result": ",",
+    "isPromise": false
+  },
+  {
+    "moduleName": "fs",
+    "exportPath": ".readFileSync",
+    "args": [
+      "./comma.txt"
+    ],
+    "id": "1524133852764597800",
+    "result": ",",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/module3",
+    "exportPath": ".apply",
+    "args": [
+      "Hello, John",
+      {
+        "__$__": "function",
+        "moduleName": "__fixtures__/module2",
+        "exportPath": ".addExclamation"
+      }
+    ],
+    "id": "1524133852774386892",
+    "result": "Hello, John!",
+    "isPromise": false
+  },
+  {
+    "moduleName": "__fixtures__/module2",
+    "exportPath": ".addExclamation",
+    "args": [
+      "Hello, John"
+    ],
+    "id": "1524133852774409224",
+    "result": "Hello, John!",
+    "isPromise": false
+  }
 ]
