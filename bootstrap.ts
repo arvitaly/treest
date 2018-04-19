@@ -59,7 +59,12 @@ export async function run(io: {
             }
         });
     } else {
-        const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config");
+        const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config").map((call) => {
+            return {
+                ...call,
+                id: undefined,
+            };
+        });
         writeFileSync(testsPath, JSON.stringify(calls, null, 2));
     }
     (global as any).test = oldTest;

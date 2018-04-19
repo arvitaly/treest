@@ -65,7 +65,9 @@ function run(io) {
             });
         }
         else {
-            const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config");
+            const calls = registry.getCalls().filter((call) => call.moduleName !== "treest.config").map((call) => {
+                return Object.assign({}, call, { id: undefined });
+            });
             fs_1.writeFileSync(testsPath, JSON.stringify(calls, null, 2));
         }
         global.test = oldTest;
