@@ -1,1 +1,164 @@
-[{"moduleName":"__fixtures__/module1","exportPath":".hello","args":["Hello","world"],"id":"1523886164388468774","result":"Hello, world!","isPromise":true},{"moduleName":"__fixtures__/module2","exportPath":".concat","args":[["Hello","world"],{"__$__":"class","moduleName":"__fixtures__/ClassA","exportPath":".default","state":"{\"value\":\"value1\"}"}],"id":"152388616438823135","result":"Hello, world","isPromise":false},{"moduleName":"__fixtures__/ClassA","exportPath":".default.getSeparator","args":[{"__$__":"class","moduleName":"__fixtures__/ClassA","exportPath":".default","state":"{\"value\":\"value1\"}"},"comma"],"id":"1523886164388405644","result":",","isPromise":false},{"moduleName":"__fixtures__/module3","exportPath":".apply","args":["Hello, world",{"__$__":"function","moduleName":"__fixtures__/module2","exportPath":".addExclamation"}],"id":"152388616439415972","result":"Hello, world!","isPromise":false},{"moduleName":"__fixtures__/module2","exportPath":".addExclamation","args":["Hello, world"],"id":"152388616439426755","result":"Hello, world!","isPromise":false},{"moduleName":"__fixtures__/module1","exportPath":".hello","args":["Hello","John"],"id":"1523886164396335267","result":"Hello, John!","isPromise":true},{"moduleName":"__fixtures__/module2","exportPath":".concat","args":[["Hello","John"],{"__$__":"class","moduleName":"__fixtures__/ClassA","exportPath":".default","state":"{\"value\":\"value1\"}"}],"id":"1523886164396846942","result":"Hello, John","isPromise":false},{"moduleName":"__fixtures__/ClassA","exportPath":".default.getSeparator","args":[{"__$__":"class","moduleName":"__fixtures__/ClassA","exportPath":".default","state":"{\"value\":\"value1\"}"},"comma"],"id":"1523886164396224863","result":",","isPromise":false},{"moduleName":"__fixtures__/module3","exportPath":".apply","args":["Hello, John",{"__$__":"function","moduleName":"__fixtures__/module2","exportPath":".addExclamation"}],"id":"1523886164397292737","result":"Hello, John!","isPromise":false},{"moduleName":"__fixtures__/module2","exportPath":".addExclamation","args":["Hello, John"],"id":"1523886164397462097","result":"Hello, John!","isPromise":false}]
+[
+    {
+        "moduleName": "__fixtures__/module1",
+        "exportPath": ".hello",
+        "args": [
+            "Hello",
+            "world"
+        ],
+        "id": "1524132871282570881",
+        "result": "Hello, world!",
+        "isPromise": true
+    },
+    {
+        "moduleName": "__fixtures__/module2",
+        "exportPath": ".concat",
+        "args": [
+            [
+                "Hello",
+                "world"
+            ],
+            {
+                "__$__": "class",
+                "moduleName": "__fixtures__/ClassA",
+                "exportPath": ".default",
+                "state": "{\"value\":\"value1\"}"
+            }
+        ],
+        "id": "1524132871282620999",
+        "result": "Hello, world",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/ClassA",
+        "exportPath": ".default.getSeparator",
+        "args": [
+            {
+                "__$__": "class",
+                "moduleName": "__fixtures__/ClassA",
+                "exportPath": ".default",
+                "state": "{\"value\":\"value1\"}"
+            },
+            "comma"
+        ],
+        "id": "1524132871282628795",
+        "result": ",",
+        "isPromise": false
+    },
+    {
+        "moduleName": "fs",
+        "exportPath": ".readFileSync",
+        "args": [
+            "./comma.txt"
+        ],
+        "id": "1524132871282323832",
+        "result": ",",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/module3",
+        "exportPath": ".apply",
+        "args": [
+            "Hello, world",
+            {
+                "__$__": "function",
+                "moduleName": "__fixtures__/module2",
+                "exportPath": ".addExclamation"
+            }
+        ],
+        "id": "1524132871297750376",
+        "result": "Hello, world!",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/module2",
+        "exportPath": ".addExclamation",
+        "args": [
+            "Hello, world"
+        ],
+        "id": "1524132871297346635",
+        "result": "Hello, world!",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/module1",
+        "exportPath": ".hello",
+        "args": [
+            "Hello",
+            "John"
+        ],
+        "id": "1524132871322628642",
+        "result": "Hello, John!",
+        "isPromise": true
+    },
+    {
+        "moduleName": "__fixtures__/module2",
+        "exportPath": ".concat",
+        "args": [
+            [
+                "Hello",
+                "John"
+            ],
+            {
+                "__$__": "class",
+                "moduleName": "__fixtures__/ClassA",
+                "exportPath": ".default",
+                "state": "{\"value\":\"value1\"}"
+            }
+        ],
+        "id": "1524132871322437545",
+        "result": "Hello, John",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/ClassA",
+        "exportPath": ".default.getSeparator",
+        "args": [
+            {
+                "__$__": "class",
+                "moduleName": "__fixtures__/ClassA",
+                "exportPath": ".default",
+                "state": "{\"value\":\"value1\"}"
+            },
+            "comma"
+        ],
+        "id": "1524132871322608478",
+        "result": ",",
+        "isPromise": false
+    },
+    {
+        "moduleName": "fs",
+        "exportPath": ".readFileSync",
+        "args": [
+            "./comma.txt"
+        ],
+        "id": "1524132871322405746",
+        "result": ",",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/module3",
+        "exportPath": ".apply",
+        "args": [
+            "Hello, John",
+            {
+                "__$__": "function",
+                "moduleName": "__fixtures__/module2",
+                "exportPath": ".addExclamation"
+            }
+        ],
+        "id": "1524132871329105125",
+        "result": "Hello, John!",
+        "isPromise": false
+    },
+    {
+        "moduleName": "__fixtures__/module2",
+        "exportPath": ".addExclamation",
+        "args": [
+            "Hello, John"
+        ],
+        "id": "1524132871329334771",
+        "result": "Hello, John!",
+        "isPromise": false
+    }
+]

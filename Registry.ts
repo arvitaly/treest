@@ -16,6 +16,7 @@ export interface IRegistryConfig {
     command: string;
     rootPath: string;
     logger: typeof console;
+    mocks: { [index: string]: any };
 }
 class Registry {
     public realLoad: any;
@@ -51,13 +52,19 @@ class Registry {
         };
     }
     public requireModule(request: string, parent: string) {
-        const modulePath = Module._resolveFilename(request, parent);
-        if (!modulePath.endsWith(".js")) {
+        const isNodeModule = !request.startsWith(".");
+        const modulePath = !isNodeModule ? Module._resolveFilename(request, parent) : request;
+        if (!isNodeModule && !modulePath.endsWith(".js")) {
             return this.realLoad(request, parent);
         }
-        const moduleName = modulePath.replace(resolve(this.config.rootPath) + sep, "").replace(/\\/gi, "\/")
-            .replace(/\.js$/, "");
-        const exports = this.realLoad(modulePath, parent);
+        const moduleName = isNodeModule ? request :
+            modulePath.replace(resolve(this.config.rootPath) + sep, "").replace(/\\/gi, "\/")
+                .replace(/\.js$/, "");
+        if (this.modules[moduleName]) {
+            return this.modules[moduleName].mock;
+        }
+        const exports = !this.config.mocks[request] ?
+            this.realLoad(modulePath, parent) : this.config.mocks[request]();
         this.modules[moduleName] = { mock: this.mockAny(moduleName, "", exports), real: exports };
         return this.modules[moduleName].mock;
     }
@@ -182,7 +189,7 @@ class Registry {
                         value: value.toString(),
                     };
                 }
-                const clas = this.funcs.find((cl) => value instanceof cl.realFunc);
+                const clas = this.funcs.find((cl) => cl.realFunc.prototype && value instanceof cl.realFunc);
                 if (clas) {
                     return {
                         __$__: "class",

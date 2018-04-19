@@ -1,11 +1,17 @@
 export default {
-    tests: [{
-        module: "./__fixtures__/module1",
-        exportName: "hello",
-        args: ["Hello", "world"],
-    }, {
-        module: "./__fixtures__/module1",
-        exportName: "hello",
-        args: ["Hello", "John"],
-    }],
+    setup: async () => {
+        //
+    },
+    mocks: {
+        fs: () => {
+            return {
+                readFileSync: (name: string) => {
+                    if (name === "./dot.txt") {
+                        return ".";
+                    }
+                    return ",";
+                },
+            };
+        },
+    },
 };

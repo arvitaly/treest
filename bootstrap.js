@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
 const path_1 = require("path");
 const readline_1 = require("readline");
-const resolveModulePath = require("resolve-module-path");
+// import resolveModulePath = require("resolve-module-path");
 const with_error_1 = require("with-error");
 const Registry_1 = require("./Registry");
 function run(io) {
@@ -19,20 +19,29 @@ function run(io) {
         const command = process.argv[2];
         const testsPath = path_1.resolve(path_1.join(process.cwd(), "tests.json"));
         const { result: resultTests, error } = with_error_1.default(() => JSON.parse(fs_1.readFileSync(testsPath).toString()));
-        const tests = error ? [] : resultTests;
+        const expectedTests = error ? [] : resultTests;
         const treestConfigPath = path_1.resolve(path_1.join(process.cwd(), "treest.config.js"));
-        const registry = new Registry_1.default({ logger: io.console, calls: tests, command, rootPath: process.cwd() });
         const config = require(treestConfigPath).default;
-        for (const test of config.tests) {
-            const mod = require(resolveModulePath(test.module, {
-                basePath: process.cwd(),
-                npmPath: path_1.resolve(path_1.join(process.cwd(), "node_modules")),
-            }));
+        if (config.setup) {
+            yield config.setup();
+        }
+        const registry = new Registry_1.default({
+            logger: io.console, calls: expectedTests, command, rootPath: process.cwd(),
+            mocks: config.mocks || {},
+        });
+        const tests = [];
+        global.test = (name, fn) => {
+            tests.push({ name, fn });
+        };
+        require(path_1.resolve(path_1.join(process.cwd(), "treest.tests.js")));
+        for (const test of tests) {
             try {
-                yield mod[test.exportName](...test.args);
+                io.console.log("Start test ", test.name);
+                yield test.fn();
             }
             catch (e) {
-                //
+                io.console.log("Error ", e);
+                process.exit(1);
             }
         }
         if (registry.hasUnexpected) {

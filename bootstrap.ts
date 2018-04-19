@@ -1,33 +1,42 @@
 import { readFileSync, writeFileSync } from "fs";
 import { join, resolve } from "path";
 import { createInterface } from "readline";
-import resolveModulePath = require("resolve-module-path");
+// import resolveModulePath = require("resolve-module-path");
 import withError from "with-error";
 import Registry from "./Registry";
 export interface ITreestConfig {
-    tests: Array<{
-        module: string;
-        exportName: string;
-        args: any[];
-    }>;
+    mocks: any;
+    setup: any;
 }
-export async function run(io: { console: typeof console }) {
+export async function run(io: {
+    console: typeof console;
+}) {
     const command = process.argv[2];
     const testsPath = resolve(join(process.cwd(), "tests.json"));
     const { result: resultTests, error } = withError(() => JSON.parse(readFileSync(testsPath).toString()));
-    const tests: any[] = error ? [] : resultTests;
+    const expectedTests: any[] = error ? [] : resultTests;
     const treestConfigPath = resolve(join(process.cwd(), "treest.config.js"));
-    const registry = new Registry({ logger: io.console, calls: tests, command, rootPath: process.cwd() });
     const config: ITreestConfig = require(treestConfigPath).default;
-    for (const test of config.tests) {
-        const mod = require(resolveModulePath(test.module, {
-            basePath: process.cwd(),
-            npmPath: resolve(join(process.cwd(), "node_modules")),
-        }));
+    if (config.setup) {
+        await config.setup();
+    }
+    const registry = new Registry({
+        logger: io.console, calls: expectedTests, command, rootPath: process.cwd(),
+        mocks: config.mocks || {},
+    });
+    const tests: Array<{ name: string, fn: any }> = [];
+    (global as any).test = (name: string, fn: any) => {
+        tests.push({ name, fn });
+    };
+    require(resolve(join(process.cwd(), "treest.tests.js")));
+
+    for (const test of tests) {
         try {
-            await mod[test.exportName](...test.args);
+            io.console.log("Start test ", test.name);
+            await test.fn();
         } catch (e) {
-            //
+            io.console.log("Error ", e);
+            process.exit(1);
         }
     }
     if (registry.hasUnexpected) {

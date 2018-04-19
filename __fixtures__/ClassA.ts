@@ -1,3 +1,5 @@
+import { readFileSync } from "fs";
+
 export default class ClassA {
     protected value = "";
     constructor() {
@@ -7,7 +9,7 @@ export default class ClassA {
         this.value = "value1";
     }
     public getSeparator(mode: "dot" | "comma" = "dot") {
-        return mode === "dot" ? "." : ",";
+        return mode === "dot" ? readFileSync("./dot.txt").toString() : readFileSync("./comma.txt").toString();
     }
 
 }
