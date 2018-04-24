@@ -3,14 +3,6 @@
     {
       "args": [
         "Hello",
-        "world"
-      ],
-      "result": "Hello, world!",
-      "isPromise": true
-    },
-    {
-      "args": [
-        "Hello",
         "John"
       ],
       "result": "Hello, John!",

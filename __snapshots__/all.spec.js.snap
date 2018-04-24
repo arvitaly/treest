@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`hello, John 1`] = `
+Object {
+  ".hello": Array [
+    Object {
+      "args": Array [
+        "Hello",
+        "John",
+      ],
+      "isPromise": true,
+      "result": "Hello, John!",
+    },
+  ],
+}
+`;
+
+exports[`hello, John 2`] = `
+Object {
+  ".addExclamation": Array [
+    Object {
+      "args": Array [
+        "Hello, John",
+      ],
+      "isPromise": false,
+      "result": "Hello, John!",
+    },
+  ],
+  ".concat": Array [
+    Object {
+      "args": Array [
+        Array [
+          "Hello",
+          "John",
+        ],
+        Object {
+          "__$__": "class",
+          "exportPath": ".default",
+          "moduleName": "__fixtures__/ClassA",
+          "state": "{\\"value\\":\\"value1\\"}",
+        },
+      ],
+      "isPromise": false,
+      "result": "Hello, John",
+    },
+  ],
+}
+`;
+
+exports[`hello, John 3`] = `
+Object {
+  ".apply": Array [
+    Object {
+      "args": Array [
+        "Hello, John",
+        Object {
+          "__$__": "function",
+          "exportPath": ".addExclamation",
+          "moduleName": "__fixtures__/module2",
+        },
+      ],
+      "isPromise": false,
+      "result": "Hello, John!",
+    },
+  ],
+}
+`;
+
+exports[`hello, John 4`] = `
+Object {
+  ".default.getSeparator": Array [
+    Object {
+      "args": Array [
+        Object {
+          "__$__": "class",
+          "exportPath": ".default",
+          "moduleName": "__fixtures__/ClassA",
+          "state": "{\\"value\\":\\"value1\\"}",
+        },
+        "comma",
+      ],
+      "isPromise": false,
+      "result": ",",
+    },
+  ],
+}
+`;
+
+exports[`hello, world 1`] = `
+Object {
+  ".hello": Array [
+    Object {
+      "args": Array [
+        "Hello",
+        "world",
+      ],
+      "isPromise": true,
+      "result": "Hello, world!",
+    },
+  ],
+}
+`;
+
+exports[`hello, world 2`] = `
+Object {
+  ".addExclamation": Array [
+    Object {
+      "args": Array [
+        "Hello, world",
+      ],
+      "isPromise": false,
+      "result": "Hello, world!",
+    },
+  ],
+  ".concat": Array [
+    Object {
+      "args": Array [
+        Array [
+          "Hello",
+          "world",
+        ],
+        Object {
+          "__$__": "class",
+          "exportPath": ".default",
+          "moduleName": "__fixtures__/ClassA",
+          "state": "{\\"value\\":\\"value1\\"}",
+        },
+      ],
+      "isPromise": false,
+      "result": "Hello, world",
+    },
+  ],
+}
+`;
+
+exports[`hello, world 3`] = `
+Object {
+  ".apply": Array [
+    Object {
+      "args": Array [
+        "Hello, world",
+        Object {
+          "__$__": "function",
+          "exportPath": ".addExclamation",
+          "moduleName": "__fixtures__/module2",
+        },
+      ],
+      "isPromise": false,
+      "result": "Hello, world!",
+    },
+  ],
+}
+`;
+
+exports[`hello, world 4`] = `
+Object {
+  ".default.getSeparator": Array [
+    Object {
+      "args": Array [
+        Object {
+          "__$__": "class",
+          "exportPath": ".default",
+          "moduleName": "__fixtures__/ClassA",
+          "state": "{\\"value\\":\\"value1\\"}",
+        },
+        "comma",
+      ],
+      "isPromise": false,
+      "result": ",",
+    },
+  ],
+}
+`;

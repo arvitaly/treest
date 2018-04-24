@@ -1,6 +1,12 @@
+import { readFileSync, unlinkSync } from "fs";
+import withError from "with-error";
 import Treest from "./Treest";
 let treest: Treest;
 beforeEach(() => {
+    withError(() => unlinkSync(__dirname + "/__treest__/__fixtures__/module1.json"));
+    withError(() => unlinkSync(__dirname + "/__treest__/__fixtures__/module2.json"));
+    withError(() => unlinkSync(__dirname + "/__treest__/__fixtures__/module3.json"));
+    withError(() => unlinkSync(__dirname + "/__treest__/__fixtures__/ClassA.json"));
     treest = new Treest({
         mode: process.argv.indexOf("-u") > -1 ? "update" : "",
         mocks: {
@@ -29,4 +35,11 @@ it("hello, John", async () => {
     expect(
         await hello("Hello", "John"),
     ).toBe("Hello, John!");
+});
+afterEach(() => {
+    require.cache = {};
+    expect(JSON.parse(readFileSync(__dirname + "/__treest__/__fixtures__/module1.json").toString())).toMatchSnapshot();
+    expect(JSON.parse(readFileSync(__dirname + "/__treest__/__fixtures__/module2.json").toString())).toMatchSnapshot();
+    expect(JSON.parse(readFileSync(__dirname + "/__treest__/__fixtures__/module3.json").toString())).toMatchSnapshot();
+    expect(JSON.parse(readFileSync(__dirname + "/__treest__/__fixtures__/ClassA.json").toString())).toMatchSnapshot();
 });
