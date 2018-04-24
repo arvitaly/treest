@@ -15,6 +15,22 @@
       ],
       "result": "Hello, world",
       "isPromise": false
+    },
+    {
+      "args": [
+        [
+          "Hello",
+          "John"
+        ],
+        {
+          "__$__": "class",
+          "moduleName": "__fixtures__/ClassA",
+          "exportPath": ".default",
+          "state": "{\"value\":\"value1\"}"
+        }
+      ],
+      "result": "Hello, John",
+      "isPromise": false
     }
   ],
   ".addExclamation": [
@@ -23,6 +39,13 @@
         "Hello, world"
       ],
       "result": "Hello, world!",
+      "isPromise": false
+    },
+    {
+      "args": [
+        "Hello, John"
+      ],
+      "result": "Hello, John!",
       "isPromise": false
     }
   ]

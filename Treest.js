@@ -3,12 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const console_1 = require("console");
 const path_1 = require("path");
 const Registry_1 = require("./Registry");
+process.on("unhandledRejection", (e) => {
+    if (e instanceof Registry_1.UnexpectedResultError) {
+        console.log.call(console, e.toString());
+    }
+});
 class Treest {
     constructor(config = {}) {
         this.config = config;
         this.testsPath = path_1.resolve(path_1.join(process.cwd(), "__treest__"));
+        this.reporter = config.reporter || new console_1.Console(process.stdout, process.stderr);
         this.registry = new Registry_1.default({
-            logger: config.reporter || new console_1.Console(process.stdout, process.stderr),
+            logger: this.reporter,
             callsPath: this.testsPath,
             command: this.config.mode || "",
             rootPath: process.cwd(),

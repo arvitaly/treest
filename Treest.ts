@@ -1,6 +1,6 @@
 import { Console } from "console";
 import { join, resolve } from "path";
-import Registry from "./Registry";
+import Registry, { UnexpectedResultError } from "./Registry";
 export interface ITreestConfig {
     mode?: string;
     mocks?: { [index: string]: () => any };
@@ -12,13 +12,20 @@ export interface ITreestConfig {
     }>;
     realRequire?: typeof require;
 }
+process.on("unhandledRejection", (e: any) => {
+    if (e instanceof UnexpectedResultError) {
+        console.log.call(console, e.toString());
+    }
+});
 class Treest {
     protected registry: Registry;
     protected testsPath: string;
+    protected reporter: typeof console;
     constructor(protected config: ITreestConfig = {}) {
         this.testsPath = resolve(join(process.cwd(), "__treest__"));
+        this.reporter = config.reporter || new Console(process.stdout, process.stderr);
         this.registry = new Registry({
-            logger: config.reporter || new Console(process.stdout, process.stderr),
+            logger: this.reporter,
             callsPath: this.testsPath,
             command: this.config.mode || "",
             rootPath: process.cwd(),

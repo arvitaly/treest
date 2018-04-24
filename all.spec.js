@@ -27,7 +27,11 @@ beforeEach(() => {
         },
     });
 });
-it("hello", () => __awaiter(this, void 0, void 0, function* () {
-    expect(yield treest.require("./__fixtures__/module1")
-        .hello("Hello", "world")).toBe("Hello, world!");
+it("hello, world", () => __awaiter(this, void 0, void 0, function* () {
+    const { hello } = treest.require("./__fixtures__/module1");
+    expect(yield hello("Hello", "world")).toBe("Hello, world!");
+}));
+it("hello, John", () => __awaiter(this, void 0, void 0, function* () {
+    const { hello } = treest.require("./__fixtures__/module1");
+    expect(yield hello("Hello", "John")).toBe("Hello, John!");
 }));

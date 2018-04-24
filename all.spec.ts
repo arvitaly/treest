@@ -18,8 +18,15 @@ beforeEach(() => {
     });
 });
 
-it("hello", async () => {
-    expect(await treest.require("./__fixtures__/module1")
-        .hello("Hello", "world"),
+it("hello, world", async () => {
+    const { hello } = treest.require("./__fixtures__/module1");
+    expect(
+        await hello("Hello", "world"),
     ).toBe("Hello, world!");
+});
+it("hello, John", async () => {
+    const { hello } = treest.require("./__fixtures__/module1");
+    expect(
+        await hello("Hello", "John"),
+    ).toBe("Hello, John!");
 });

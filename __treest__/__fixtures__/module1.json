@@ -7,6 +7,14 @@
       ],
       "result": "Hello, world!",
       "isPromise": true
+    },
+    {
+      "args": [
+        "Hello",
+        "John"
+      ],
+      "result": "Hello, John!",
+      "isPromise": true
     }
   ]
 }

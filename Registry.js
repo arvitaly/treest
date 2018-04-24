@@ -8,6 +8,7 @@ const path_1 = require("path");
 const with_error_1 = require("with-error");
 const util_1 = require("./util");
 const Module = ModuleM;
+const realLoad = Module._load;
 class Registry {
     constructor(config) {
         this.config = config;
@@ -18,19 +19,21 @@ class Registry {
         this.calls = [];
         this.expectedCalls = [];
         this.ignoreMock = false;
+        this.x = Math.random();
         this.addKnownClass = (params) => {
             this.config.knownClasses.push(params);
         };
         require.cache = {};
         this.realDate = Date;
         this.realRandom = Math.random;
-        this.realLoad = this.config.realRequire ? this.config.realRequire : Module._load;
+        this.realLoad = realLoad;
         // this.expectedCalls = this.config.calls;
     }
     unmockRequire() {
         Module._load = this.realLoad;
     }
     mockRequire() {
+        Module._cache = {};
         Module._load = (request, parent) => {
             const modulePath = Module._resolveFilename(request, parent);
             if (this.modules[modulePath]) {
@@ -65,13 +68,15 @@ class Registry {
             return this.modules[moduleName].mock;
         }
         this.loadCalls(moduleName);
+        this.modules[moduleName] = {};
         const exports = !this.config.mocks[request] ?
             this.realLoad(modulePath, parent) : this.config.mocks[request]();
-        this.modules[moduleName] = { mock: this.mockAny(moduleName, "", exports), real: exports };
+        this.modules[moduleName].mock = this.mockAny(moduleName, "", exports);
+        this.modules[moduleName].real = exports;
         return this.modules[moduleName].mock;
     }
     loadCalls(moduleName) {
-        const { error, result } = with_error_1.default(() => this.realLoad(path_1.join(this.config.callsPath, moduleName)));
+        const { error, result } = with_error_1.default(() => JSON.parse(fs_1.readFileSync(path_1.join(this.config.callsPath, moduleName + ".json")).toString()));
         if (!error) {
             const calls = result;
             Object.keys(calls).map((exportPath) => {
@@ -307,6 +312,10 @@ class Registry {
                         expectedResult: expectedCall.result,
                         isPromise,
                     });
+                    /*throw new Error("\x1b[35m" + call.moduleName + "::" + call.exportPath + "\x1b[0m\n" +
+                        "Args: \x1b[33m" + JSON.stringify(call.args, null, 2) + "\x1b[0m\n" +
+                        "Result: \x1b[31m" + JSON.stringify(result, null, 2) + "\x1b[0m\n" +
+                        "Expected: \x1b[32m" + JSON.stringify(expectedCall.result, null, 2) + "\x1b[0m");*/
                 }
             }
         }
@@ -316,7 +325,7 @@ class Registry {
             return;
         }
         const calls = {};
-        this.calls.filter((c) => c.moduleName === call.moduleName)
+        this.expectedCalls.filter((c) => c.moduleName === call.moduleName)
             .map((c) => {
             if (!calls[c.exportPath]) {
                 calls[c.exportPath] = [];
@@ -326,6 +335,28 @@ class Registry {
                 result: c.result,
                 isPromise: c.isPromise,
             });
+        });
+        this.calls.filter((c) => c.moduleName === call.moduleName)
+            .map((c) => {
+            if (!calls[c.exportPath]) {
+                calls[c.exportPath] = [];
+            }
+            const eCall = this.expectedCalls.find((c2) => deepEqual(c.args, c2.args)
+                && c.moduleName === c2.moduleName && c.exportPath === c2.exportPath);
+            if (eCall) {
+                eCall.result = c.result;
+                eCall.isPromise = c.isPromise;
+            }
+            else {
+                const exists = calls[c.exportPath].find((cc) => deepEqual(cc.args, c.args));
+                if (!exists) {
+                    calls[c.exportPath].push({
+                        args: c.args,
+                        result: c.result,
+                        isPromise: c.isPromise,
+                    });
+                }
+            }
         });
         const moduleSavePath = path_1.join(this.config.callsPath, call.moduleName + ".json");
         with_error_1.default(() => mkdirp.sync(path_1.dirname(moduleSavePath)));

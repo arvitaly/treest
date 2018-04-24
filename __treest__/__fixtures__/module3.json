@@ -11,6 +11,18 @@
       ],
       "result": "Hello, world!",
       "isPromise": false
+    },
+    {
+      "args": [
+        "Hello, John",
+        {
+          "__$__": "function",
+          "moduleName": "__fixtures__/module2",
+          "exportPath": ".addExclamation"
+        }
+      ],
+      "result": "Hello, John!",
+      "isPromise": false
     }
   ]
 }

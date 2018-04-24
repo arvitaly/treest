@@ -18,7 +18,9 @@
     "url": "https://github.com/arvitaly/treest/issues"
   },
   "homepage": "https://github.com/arvitaly/treest#readme",
-  "jest": {},
+  "jest": {
+    "modulePathIgnorePatterns": ["/__treest__"]
+  },
   "devDependencies": {
     "@types/jest": "^22.2.3",
     "coveralls": "^3.0.0",

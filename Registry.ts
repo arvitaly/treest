@@ -1,5 +1,5 @@
 import deepEqual = require("deep-equal");
-import { writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import mkdirp = require("mkdirp");
 import ModuleM = require("module");
 import { dirname, join, resolve, sep } from "path";
@@ -28,6 +28,7 @@ export interface IRegistryConfig {
     }>;
     realRequire?: typeof require;
 }
+const realLoad = Module._load;
 class Registry {
     public realLoad: any;
     public hasUnexpected = false;
@@ -60,10 +61,11 @@ class Registry {
     protected tempArgsObjects: Array<{ mock: any; real: any; }>;
     protected realDate: typeof Date;
     protected realRandom: typeof Math.random;
+    protected x = Math.random();
     constructor(protected config: IRegistryConfig) {
         require.cache = {}; this.realDate = Date;
         this.realRandom = Math.random;
-        this.realLoad = this.config.realRequire ? this.config.realRequire : Module._load;
+        this.realLoad = realLoad;
         // this.expectedCalls = this.config.calls;
     }
     public addKnownClass = (params: { class: any; name: string; }) => {
@@ -73,6 +75,7 @@ class Registry {
         Module._load = this.realLoad;
     }
     public mockRequire() {
+        Module._cache = {};
         Module._load = (request: string, parent: any) => {
             const modulePath = Module._resolveFilename(request, parent);
             if (this.modules[modulePath]) {
@@ -108,13 +111,17 @@ class Registry {
             return this.modules[moduleName].mock;
         }
         this.loadCalls(moduleName);
+        this.modules[moduleName] = {} as any;
         const exports = !this.config.mocks[request] ?
             this.realLoad(modulePath, parent) : this.config.mocks[request]();
-        this.modules[moduleName] = { mock: this.mockAny(moduleName, "", exports), real: exports };
+        this.modules[moduleName].mock = this.mockAny(moduleName, "", exports);
+        this.modules[moduleName].real = exports;
         return this.modules[moduleName].mock;
     }
     public loadCalls(moduleName: string) {
-        const { error, result } = withError(() => this.realLoad(join(this.config.callsPath, moduleName)));
+        const { error, result } = withError(() =>
+            JSON.parse(readFileSync(join(this.config.callsPath, moduleName + ".json")).toString()));
+
         if (!error) {
             const calls: { [index: string]: any[] } = result;
             Object.keys(calls).map((exportPath) => {
@@ -354,6 +361,10 @@ class Registry {
                         expectedResult: expectedCall.result,
                         isPromise,
                     });
+                    /*throw new Error("\x1b[35m" + call.moduleName + "::" + call.exportPath + "\x1b[0m\n" +
+                        "Args: \x1b[33m" + JSON.stringify(call.args, null, 2) + "\x1b[0m\n" +
+                        "Result: \x1b[31m" + JSON.stringify(result, null, 2) + "\x1b[0m\n" +
+                        "Expected: \x1b[32m" + JSON.stringify(expectedCall.result, null, 2) + "\x1b[0m");*/
                 }
             }
         }
@@ -363,7 +374,7 @@ class Registry {
             return;
         }
         const calls: any = {};
-        this.calls.filter((c) => c.moduleName === call.moduleName)
+        this.expectedCalls.filter((c) => c.moduleName === call.moduleName)
             .map((c) => {
                 if (!calls[c.exportPath]) {
                     calls[c.exportPath] = [];
@@ -373,6 +384,27 @@ class Registry {
                     result: c.result,
                     isPromise: c.isPromise,
                 });
+            });
+        this.calls.filter((c) => c.moduleName === call.moduleName)
+            .map((c) => {
+                if (!calls[c.exportPath]) {
+                    calls[c.exportPath] = [];
+                }
+                const eCall = this.expectedCalls.find((c2) => deepEqual(c.args, c2.args)
+                    && c.moduleName === c2.moduleName && c.exportPath === c2.exportPath);
+                if (eCall) {
+                    eCall.result = c.result;
+                    eCall.isPromise = c.isPromise;
+                } else {
+                    const exists = calls[c.exportPath].find((cc: any) => deepEqual(cc.args, c.args));
+                    if (!exists) {
+                        calls[c.exportPath].push({
+                            args: c.args,
+                            result: c.result,
+                            isPromise: c.isPromise,
+                        });
+                    }
+                }
             });
         const moduleSavePath = join(this.config.callsPath, call.moduleName + ".json");
         withError(() => mkdirp.sync(dirname(moduleSavePath)));
