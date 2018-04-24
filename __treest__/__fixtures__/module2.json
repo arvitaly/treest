@@ -1,0 +1,29 @@
+{
+  ".concat": [
+    {
+      "args": [
+        [
+          "Hello",
+          "world"
+        ],
+        {
+          "__$__": "class",
+          "moduleName": "__fixtures__/ClassA",
+          "exportPath": ".default",
+          "state": "{\"value\":\"value1\"}"
+        }
+      ],
+      "result": "Hello, world",
+      "isPromise": false
+    }
+  ],
+  ".addExclamation": [
+    {
+      "args": [
+        "Hello, world"
+      ],
+      "result": "Hello, world!",
+      "isPromise": false
+    }
+  ]
+}

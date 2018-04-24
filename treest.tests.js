@@ -9,9 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const module1_1 = require("./__fixtures__/module1");
-test("Hello, world!", () => __awaiter(this, void 0, void 0, function* () {
-    yield module1_1.hello("Hello", "world");
-}));
-test("Hello, John!", () => __awaiter(this, void 0, void 0, function* () {
-    yield module1_1.hello("Hello", "John");
-}));
+/*it("Hello, world!", );
+it("Hello, John!", async () => {
+    await hello("Hello", "John");
+});*/
+exports.default = {
+    func: () => __awaiter(this, void 0, void 0, function* () {
+        yield module1_1.hello("Hello", "world");
+    }),
+};

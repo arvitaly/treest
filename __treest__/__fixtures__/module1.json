@@ -1,0 +1,12 @@
+{
+  ".hello": [
+    {
+      "args": [
+        "Hello",
+        "world"
+      ],
+      "result": "Hello, world!",
+      "isPromise": true
+    }
+  ]
+}

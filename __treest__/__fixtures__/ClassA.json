@@ -1,0 +1,17 @@
+{
+  ".default.getSeparator": [
+    {
+      "args": [
+        {
+          "__$__": "class",
+          "moduleName": "__fixtures__/ClassA",
+          "exportPath": ".default",
+          "state": "{\"value\":\"value1\"}"
+        },
+        "comma"
+      ],
+      "result": ",",
+      "isPromise": false
+    }
+  ]
+}

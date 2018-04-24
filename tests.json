@@ -5,9 +5,7 @@
     "args": [
       "Hello",
       "world"
-    ],
-    "result": "Hello, world!",
-    "isPromise": true
+    ]
   },
   {
     "moduleName": "__fixtures__/module2",
@@ -61,9 +59,7 @@
         "moduleName": "__fixtures__/module2",
         "exportPath": ".addExclamation"
       }
-    ],
-    "result": "Hello, world!",
-    "isPromise": false
+    ]
   },
   {
     "moduleName": "__fixtures__/module2",
@@ -72,81 +68,6 @@
       "Hello, world"
     ],
     "result": "Hello, world!",
-    "isPromise": false
-  },
-  {
-    "moduleName": "__fixtures__/module1",
-    "exportPath": ".hello",
-    "args": [
-      "Hello",
-      "John"
-    ],
-    "result": "Hello, John!",
-    "isPromise": true
-  },
-  {
-    "moduleName": "__fixtures__/module2",
-    "exportPath": ".concat",
-    "args": [
-      [
-        "Hello",
-        "John"
-      ],
-      {
-        "__$__": "class",
-        "moduleName": "__fixtures__/ClassA",
-        "exportPath": ".default",
-        "state": "{\"value\":\"value1\"}"
-      }
-    ],
-    "result": "Hello, John",
-    "isPromise": false
-  },
-  {
-    "moduleName": "__fixtures__/ClassA",
-    "exportPath": ".default.getSeparator",
-    "args": [
-      {
-        "__$__": "class",
-        "moduleName": "__fixtures__/ClassA",
-        "exportPath": ".default",
-        "state": "{\"value\":\"value1\"}"
-      },
-      "comma"
-    ],
-    "result": ",",
-    "isPromise": false
-  },
-  {
-    "moduleName": "fs",
-    "exportPath": ".readFileSync",
-    "args": [
-      "./comma.txt"
-    ],
-    "result": ",",
-    "isPromise": false
-  },
-  {
-    "moduleName": "__fixtures__/module3",
-    "exportPath": ".apply",
-    "args": [
-      "Hello, John",
-      {
-        "__$__": "function",
-        "moduleName": "__fixtures__/module2",
-        "exportPath": ".addExclamation"
-      }
-    ],
-    "result": "Hello, John!",
-    "isPromise": false
-  },
-  {
-    "moduleName": "__fixtures__/module2",
-    "exportPath": ".addExclamation",
-    "args": [
-      "Hello, John"
-    ],
-    "result": "Hello, John!",
     "isPromise": false
   }
 ]
