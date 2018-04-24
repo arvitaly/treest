@@ -19,7 +19,7 @@ Next time, when we start an executing of this function, Treest will compare the 
 
 ## Restrictions
 
-Treest logged all functions arguments and results, so, it imposes some restrictions. Shortly, Treest can work only with serializable objects.
+Treest logged the arguments and results of all functions, so, it imposes some restrictions. Shortly, Treest can work only with serializable objects.
 
 Treest supports all primitive js-types: boolean, plain-object, array, string, number, null, undefined.
 
