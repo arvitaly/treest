@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const console_1 = require("console");
-const resolveModulePath = require("resolve-module-path");
 const path_1 = require("path");
+const resolveModulePath = require("resolve-module-path");
 const Registry_1 = require("./Registry");
 process.on("unhandledRejection", (e) => {
     if (e instanceof Registry_1.UnexpectedResultError) {
