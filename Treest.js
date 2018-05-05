@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const console_1 = require("console");
+const resolveModulePath = require("resolve-module-path");
 const path_1 = require("path");
 const Registry_1 = require("./Registry");
 process.on("unhandledRejection", (e) => {
@@ -26,6 +27,9 @@ class Treest {
     }
     require(modulePath) {
         this.registry.mockRequire();
+        modulePath = resolveModulePath(modulePath, {
+            stackDepth: 1,
+        });
         const returns = this.registry.requireModule(modulePath, module);
         this.registry.unmockRequire();
         return returns;

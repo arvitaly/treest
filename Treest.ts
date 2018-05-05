@@ -1,5 +1,6 @@
 import { Console } from "console";
 import { join, resolve } from "path";
+import resolveModulePath = require("resolve-module-path");
 import Registry, { UnexpectedResultError } from "./Registry";
 export interface ITreestConfig {
     mode?: string;
@@ -37,6 +38,9 @@ class Treest {
     }
     public require(modulePath: string) {
         this.registry.mockRequire();
+        modulePath = resolveModulePath(modulePath, {
+            stackDepth: 1,
+        });
         const returns = this.registry.requireModule(modulePath, module);
         this.registry.unmockRequire();
         return returns;
